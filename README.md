@@ -24,6 +24,7 @@ This project demonstrates a computer vision system for identifying and labeling 
 - Python 3
 - OpenCV (for image and video processing)
 - NumPy
+- TheMovieDB
 - (Potential Extension) scikit-image, deep learning libraries for advanced matching
 
 ## Getting Started
@@ -48,4 +49,4 @@ MIT License
 
 ---
 
-This project is inspired by the need to organize and identify video episodes from collections with incomplete metadata, using computer vision techniques. All examples and documentation use public domain or open-access content to ensure ethical and legal compliance.
+This project is inspired by the need to organize and identify video episodes from collections with incomplete metadata, using computer vision techniques. All examples and documentation use public domain or open-access content to ensure ethical and legal compliance. This product uses the TMDB API but is not endorsed or certified by TMDB.
