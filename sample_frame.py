@@ -1,6 +1,6 @@
 import cv2
 import os
-
+#TODO: sample first few seconds for title cards
 def sample_frames(video_path, output_dir, interval_seconds=5):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
