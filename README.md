@@ -4,7 +4,7 @@ This project demonstrates a computer vision system for identifying and labeling 
 
 ## Project Overview
 - **Input:**
-  - Video file(s) (e.g., .mkv) with unknown or partial episode label
+  - Video file(s) (e.g., .mkv) with unknown episode label
 - **Output:**
   - The best-matching episode name and number for each video file
 
@@ -14,9 +14,9 @@ This project demonstrates a computer vision system for identifying and labeling 
 2. **Image Preprocessing:**
    - Preprocesses both video frames and thumbnails (resize, grayscale, etc.) for robust comparison.
 3. **Image Matching:**
-   - Compares each sampled frame to the set of thumbnails using an image similarity method (e.g. LBP-based feature extraction and histogram comparison, deep learning-based feature extraction using CNN, etc. ).
+   - Compares each sampled frame to the set of thumbnails using an image similarity method (pHash or CNN).
    - Selects the reference image with the highest match score.
-   - Works even if only a portion of the episode is available, as long as it includes or resembles the thumbnail.
+   - Works even if only a portion of the episode is available, as long as it includes or resembles the thumbnail frame.
 4. **Result Reporting:**
    - Outputs the episode name and number for each video file or segment.
 
@@ -24,8 +24,10 @@ This project demonstrates a computer vision system for identifying and labeling 
 - Python 3
 - OpenCV (for image and video processing)
 - NumPy
-- TheMovieDB
-- (Potential Extension) scikit-image, deep learning libraries for advanced matching
+- TheMovieDB API
+- imagehash
+- PIL
+- (Potential Extension) deep learning libraries for advanced matching
 
 ## Getting Started
 1. Launch the application.
