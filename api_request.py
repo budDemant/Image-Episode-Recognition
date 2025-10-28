@@ -28,12 +28,14 @@ def select_show(shows):
     while True:
         try:
             choice = int(input(f"\nSelect a show (1-{len(shows)}): ")) - 1
-            if 0 <= choice < len(shows):
-                return shows[choice]
-            else:
-                print("Invalid selection. Please try again.")
         except ValueError:
             print("Please enter a valid number.")
+            continue  # Skip to next iteration
+        
+        if 0 <= choice < len(shows):
+            return shows[choice]    
+        
+        print("Invalid selection. Please try again.")
 
 def select_season():
     """Get user selection of Season number"""
