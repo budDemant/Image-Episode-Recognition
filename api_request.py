@@ -16,6 +16,7 @@ params = {
 }
 
 def show_query_list(shows):
+    """Display numbered list of shows"""
     for i, show in enumerate(shows, 1):
         name = show.get("name")
         first_air_date = show.get("first_air_date", "")
@@ -23,7 +24,20 @@ def show_query_list(shows):
         print(f"{i}. {name} ({year})")
 
 def select_show(shows):
-    # TODO: Prompt user to choose show, then Season number
+    """Get user selection from the displayed show list"""
+    while True:
+        try:
+            choice = int(input(f"\nSelect a show (1-{len(shows)}): ")) - 1
+            if 0 <= choice < len(shows):
+                return shows[choice]
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def select_season():
+    """Get user selection of Season number"""
+    # TODO: Prompt user to choose Season number
     return True
 
 response = requests.get(url, params=params)
@@ -32,6 +46,7 @@ if response.status_code == 200:
     data = response.json()
     results = data.get("results", [])
     show_query_list(results)
+    selected_show = select_show(results)
     
 else:
     print(f"Error: {response.status_code} - {response.text}")
