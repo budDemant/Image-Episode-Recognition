@@ -15,16 +15,20 @@ params = {
     "query": tv_show_query
 }
 
+
 response = requests.get(url, params=params)
 if response.status_code == 200:
     print(f'Search results for "{tv_show_query}"')
     data = response.json()
     results = data.get("results", [])
-    for show in results:
+    for i, show in enumerate(results, 1):
         name = show.get("name")
         first_air_date = show.get("first_air_date", "")
         year = first_air_date[:4] if first_air_date else "N/A"
-        # TODO: numbered list of results, then prompt user for Season number
-        print(f"{name} ({year})")
+        # TODO: Prompt user to choose show, then Season number
+        print(f"{i}. {name} ({year})")
 else:
     print(f"Error: {response.status_code} - {response.text}")
+
+
+
