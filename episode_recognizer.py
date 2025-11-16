@@ -11,6 +11,7 @@ import numpy as np
 from sample_frame import sample_frames
 from match_image_pHash import PerceptualHashMatcher
 from episode_image_fetcher import EpisodeImageFetcher
+from rename_file import rename_file
 
 class EpisodeRecognizer:
     def __init__(self):
@@ -39,7 +40,7 @@ class EpisodeRecognizer:
             print("Extracting frames from video...")
             frame_count = sample_frames(video_path, video_temp_dir, interval_seconds=10)
             print(f"Extracted {frame_count} frames")
-            
+            # TODO: except for invalid file path
             # Download episode images
             print("Downloading episode images from TMDB...")
             episode_images, images_temp_dir = self.fetcher.fetch_season_images(tv_id, season_number)
@@ -181,3 +182,7 @@ if __name__ == "__main__":
         print(f"High Confidence: {result['is_confident']}")
     else:
         print(f"Recognition failed: {result}")
+    
+    rename_file(video_path, season_number, result['episode_number'], result['episode_name'],
+                style='human')    
+    
