@@ -1,6 +1,6 @@
-from episode_recognizer import EpisodeRecognizer
-from rename_file import rename_file
-from query_show import QueryShow
+from src.episode_recognizer import EpisodeRecognizer
+from src.rename_file import rename_file
+from src.query_show import QueryShow
 
 
 def main():

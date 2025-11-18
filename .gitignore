@@ -1,4 +1,3 @@
-.github/
 venv/
 /.env
 __pycache__/

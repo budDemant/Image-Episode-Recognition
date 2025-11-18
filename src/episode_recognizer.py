@@ -7,9 +7,9 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from sample_frame import sample_frames
-from match_image_pHash import PerceptualHashMatcher
-from episode_image_fetcher import EpisodeImageFetcher
+from .sample_frame import sample_frames
+from .match_image_pHash import PerceptualHashMatcher
+from .episode_image_fetcher import EpisodeImageFetcher
 
 class EpisodeRecognizer:
     def __init__(self):
