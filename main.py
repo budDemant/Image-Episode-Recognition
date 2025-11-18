@@ -1,14 +1,17 @@
 from episode_recognizer import EpisodeRecognizer
 from rename_file import rename_file
+from query_show import QueryShow
+
 
 def main():
     recognizer = EpisodeRecognizer()
+    query = QueryShow()
     
     video_path = input("Enter path to video file: ").strip().strip('"')
-    tv_id = int(input("Enter TMDB TV show ID: "))
+    show_id = query.query_show()
     season_number = int(input("Enter season number: "))
     
-    result = recognizer.recognize_episode(video_path, tv_id, season_number)
+    result = recognizer.recognize_episode(video_path, show_id, season_number)
     
     if result and "error" not in result:
         print(f"\n=== RECOGNITION RESULT ===")

@@ -2,7 +2,6 @@
 Episode Recognition System
 Combines video frame sampling with TMDB episode image matching
 """
-import os
 import tempfile
 from pathlib import Path
 import cv2
@@ -11,7 +10,6 @@ import numpy as np
 from sample_frame import sample_frames
 from match_image_pHash import PerceptualHashMatcher
 from episode_image_fetcher import EpisodeImageFetcher
-from rename_file import rename_file
 
 class EpisodeRecognizer:
     def __init__(self):
