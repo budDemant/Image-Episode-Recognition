@@ -2,6 +2,14 @@ from src.episode_recognizer import EpisodeRecognizer
 from src.rename_file import rename_file
 from src.query_show import QueryShow
 import os
+from multiprocessing import Pool, cpu_count
+
+def process_single_video(args):
+    """Worker function for multiprocessing"""
+    video_path, show_id, season_number = args
+    recognizer = EpisodeRecognizer()
+    result = recognizer.recognize_episode(video_path, show_id, season_number)
+    return (video_path, result)
 
 def get_video_paths():
     '''Get video filepath(s) from user input'''
@@ -35,10 +43,12 @@ def main():
     season_number = int(input("Enter season number: "))
     
     # Process videos
-    results = []
-    for video_path in video_paths:
-        result = recognizer.recognize_episode(video_path, show_id, season_number)
-        results.append((video_path, result))
+    if len(video_paths) > 1:
+        with Pool(processes=cpu_count()) as pool:
+            results = pool.map(process_single_video,
+                               [(video_path, show_id, season_number) for video_path in video_paths])
+    else:
+        results = [process_single_video((video_paths[0], show_id, season_number))]
 
     # Display results
     for video_path, result in results:
