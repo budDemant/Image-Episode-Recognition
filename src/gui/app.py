@@ -41,7 +41,7 @@ class EpisodeRecognizerGUI:
         select_folder_btn = tk.Button(
             video_frame,
             text="Select Folder",
-            command=self._on_submit,
+            command=self._select_folder,
             width=12
         )
         select_folder_btn.pack(pady=2)
@@ -100,6 +100,20 @@ class EpisodeRecognizerGUI:
             self.video_paths = [filepath]
             self._update_video_display()
             
+    def _select_folder(self):
+        """Open dialog to select a folder containing video files"""
+        folder = filedialog.askdirectory(title="Select Folder with Videos")
+        if folder:
+            # Get all video files from folder
+            video_extensions = ('.mkv', '.mp4', '.avi', '.mov')
+            self.video_paths = [
+                os.path.join(folder, f)
+                for f in os.listdir(folder)
+                if f.lower().endswith(video_extensions)
+            ]
+            
+            self._update_video_display()
+
     def _update_video_display(self):
         """Update the text widget to show selected videos"""
         self.video_path_text.config(state='normal') # enable editing temporarily
