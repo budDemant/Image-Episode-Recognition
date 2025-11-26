@@ -13,7 +13,7 @@ class EpisodeRecognizerGUI:
         self._create_widgets()
     
     def _create_widgets(self):
-        # Frame for video file/folder selection
+        # Frame: video file/folder selection
         video_frame = tk.LabelFrame(self.window, text="Video Selection", padx=10, pady=10)
         video_frame.pack(fill="x", padx=20, pady=10)
         
@@ -21,13 +21,9 @@ class EpisodeRecognizerGUI:
         self.video_path = tk.Text(video_frame, height=3, width=60, state='disabled')
         self.video_path.pack(side="left", padx=5)
         
-        # Align buttons for file/folder selection
-        video_btn_frame = tk.Frame(video_frame)
-        video_btn_frame.pack(side="right", padx=5)
-        
         # Select File Button
         select_file_btn = tk.Button(
-            video_btn_frame,
+            video_frame,
             text="Select File",
             command=self._on_submit,
             width=12
@@ -36,13 +32,44 @@ class EpisodeRecognizerGUI:
         
         # Select Folder Button
         select_folder_btn = tk.Button(
-            video_btn_frame,
+            video_frame,
             text="Select Folder",
             command=self._on_submit,
             width=12
         )
         select_folder_btn.pack(pady=2)
+        
+        # Frame: show selection/search
+        search_show_frame = tk.LabelFrame(self.window, text="Search Show", padx=10, pady=10)
+        search_show_frame.pack(fill="x", padx=20, pady=10)
+        
+        show_name_label = tk.Label(search_show_frame, text="Show Name:")
+        show_name_label.grid(row=0, column=0, sticky="w", pady=5)
+        
+        self.show_name_entry = tk.Entry(search_show_frame, width=40)
+        self.show_name_entry.grid(row=0, column=1, padx=10, pady=5)
+        
+        search_show_btn = tk.Button(
+            search_show_frame,
+            text="Search",
+            command=self._on_submit,
+            width=12,
+        )
+        search_show_btn.grid(row=0, column=3, pady=2)
+        
+        # Frame: search results
+        search_results_frame = tk.LabelFrame(self.window, text="Search Results", padx=10, pady=10)
+        search_results_frame.pack(fill="x", padx=20, pady=10, expand=True)
+        
+        search_scrollbar = tk.Scrollbar(search_results_frame)
+        search_scrollbar.pack(side="right", fill="y")
+        
+        listbox = tk.Listbox(search_results_frame, yscrollcommand=search_scrollbar.set,
+                             width=80, height=8)
+        listbox.pack(side='left', pady=10)
+        search_scrollbar.config(command=listbox.yview)
 
+        listbox.bind("<<ListboxSelect>>", self._on_submit)
 
 
     
