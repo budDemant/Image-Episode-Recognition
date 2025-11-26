@@ -35,6 +35,7 @@ This project demonstrates a computer vision system for identifying and labeling 
 ### Prerequisites
 - Python 3.7 or higher installed on your system
 - Git installed
+- A free-tier [TheMovieDB API key](https://developer.themoviedb.org/docs/getting-started) 
 
 ### 1. Clone the Repository
 ```bash
@@ -56,7 +57,14 @@ venv\Scripts\activate
 python3 -m venv venv
 source venv/bin/activate
 ```
-### 3. Install Dependencies
+
+### 3. Create a .env file (to store API key)
+```bash
+echo TMDB_API_KEY= > .env
+```
+Then add your own [TheMovieDB API key](https://developer.themoviedb.org/docs/getting-started) 
+
+### 4. Install Dependencies
 
 Install the runtime dependencies:
 
@@ -64,7 +72,7 @@ Install the runtime dependencies:
 pip install -r requirements.txt
 ```
 
-### 4. Run the Program
+### 5. Run the Program
 
 ```bash
 python main.py
