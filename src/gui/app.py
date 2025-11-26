@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog
 
+import os
+
 class EpisodeRecognizerGUI:
     def __init__(self):
         # 1. Create main window
@@ -8,6 +10,11 @@ class EpisodeRecognizerGUI:
         self.window.title("Image-Episode Recognition")
         self.window.geometry("700x600")
         self.window.resizable(True, True)
+        
+        # Variables to store user input
+        self.video_paths = []
+        self.show_id = None
+
         
         # 2. Create widgets (buttons, text fields, etc.)
         self._create_widgets()
@@ -18,14 +25,14 @@ class EpisodeRecognizerGUI:
         video_frame.pack(fill="x", padx=20, pady=10)
         
         # Multi-line textbox for video file/folder path
-        self.video_path = tk.Text(video_frame, height=3, width=60, state='disabled')
-        self.video_path.pack(side="left", padx=5)
+        self.video_path_text = tk.Text(video_frame, height=3, width=60, state='disabled')
+        self.video_path_text.pack(side="left", padx=5)
         
         # Select File Button
         select_file_btn = tk.Button(
             video_frame,
             text="Select File",
-            command=self._on_submit,
+            command=self._select_file,
             width=12
         )
         select_file_btn.pack(pady=2)
@@ -78,6 +85,35 @@ class EpisodeRecognizerGUI:
         # Call your existing core functions
         # Display results
         pass
+    
+    def _select_file(self):
+        """Open file dialog to select a single video file"""
+        filetypes = (
+            ('Video files', '*.mkv *.mp4 *.avi *.mov'),
+            ('All files', '*.*')
+        )
+        filepath = filedialog.askopenfilename(
+            title="Select Video File",
+            filetypes=filetypes
+        )
+        if filepath:
+            self.video_paths = [filepath]
+            self._update_video_display()
+            
+    def _update_video_display(self):
+        """Update the text widget to show selected videos"""
+        self.video_path_text.config(state='normal') # enable editing temporarily
+        self.video_path_text.delete(1.0, tk.END)
+        if len(self.video_paths) == 1:
+            self.video_path_text.insert(1.0, self.video_paths[0])
+        else:
+            self.video_path_text.insert(1.0, f"{len(self.video_paths)} videos selected:\n")
+            for path in self.video_paths[:5]:  # Show first 5
+                self.video_path_text.insert(tk.END, f"  • {os.path.basename(path)}\n")
+            if len(self.video_paths) > 5:
+                self.video_path_text.insert(tk.END, f"  ... and {len(self.video_paths) - 5} more")
+        self.video_path_text.config(state='disabled')
+
     
     def run(self):
         # Start GUI
