@@ -82,6 +82,16 @@ class EpisodeRecognizerGUI:
         )
         search_show_btn.grid(row=0, column=3, pady=2)
         
+        # Season number
+        season_number_label = tk.Label(search_results_frame, text="Season Number:")
+        season_number_label.pack(pady=5)
+        # TODO: Error handling for invalid input
+        self.season_number_entry = tk.Entry(search_results_frame, width=40)
+        self.season_number_entry.pack(padx=10, pady=5)
+        
+        # Process button
+        
+        
     def _select_list(self, event):
         listbox = event.widget
         selection = listbox.get(listbox.curselection())
@@ -90,14 +100,15 @@ class EpisodeRecognizerGUI:
     def _search_show(self, entry, listbox):
         query = entry.get()
         results = QueryShow().search_show_by_name(query)
-        #TODO: refactor numbered_list function to remove print statements
+        #TODO: refactor numbered_list function in query_show to remove print statements
         for show in results:
             name = show.get("name")
             first_air_date = show.get("first_air_date", "")
             year = first_air_date[:4] if first_air_date else "N/A"
+            id = show.get("id")
             show_entry = f"{name} ({year})"
             listbox.insert(tk.END, show_entry)
-        return results
+        return id
     
     def _select_file(self):
         """Open file dialog to select a single video file"""
