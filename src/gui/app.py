@@ -135,7 +135,7 @@ class EpisodeRecognizerGUI:
             filetypes=filetypes
         )
         if filepath:
-            self.video_paths = [filepath]
+            self.video_paths = [os.path.normpath(filepath)]
             self._update_video_display()
             
     def _select_folder(self):
@@ -143,6 +143,7 @@ class EpisodeRecognizerGUI:
         folder = filedialog.askdirectory(title="Select Folder with Videos")
         if folder:
             # Get all video files from folder
+            folder = os.path.normpath(folder)
             video_extensions = ('.mkv', '.mp4', '.avi', '.mov')
             self.video_paths = [
                 os.path.join(folder, f)
@@ -168,15 +169,19 @@ class EpisodeRecognizerGUI:
         
     def _process(self):
         fetcher = EpisodeImageFetcher()
+        season_number = int(self.season_number_entry.get())
         episode_images, images_temp_dir = fetcher.fetch_season_images(self.show_id, 
-                                                                      self.season_number_entry)
+                                                                      season_number)
         results = process_videos(self.video_paths, self.show_id, 
-                                 self.season_number_entry, episode_images)
-        # for result in results:
-        #     rename_file(
-        #                 self.video_paths, self.season_number_entry, result['episode_number'],
-        #                 result['episode_name'], style='human'
-        #             )
+                                 season_number, episode_images)
+        for video_path, result in results:  # unpack tuple
+            rename_file(
+                video_path,  
+                season_number,
+                result['episode_number'],
+                result['episode_name'],
+                style='db'
+            )
         fetcher.cleanup_temp_files(images_temp_dir)
         
 
