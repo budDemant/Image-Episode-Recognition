@@ -5,6 +5,7 @@ from src.query_show import QueryShow
 from src.episode_image_fetcher import EpisodeImageFetcher
 from src.video_processor import process_videos
 from src.rename_file import rename_file
+from src.user_interface import display_result
 
 import os
 
@@ -105,6 +106,20 @@ class EpisodeRecognizerGUI:
             width=20
         )
         process_btn.pack(pady=10)
+        
+        # Frame: Recognition Results
+        recognition_results_frame = tk.LabelFrame(self.window, text="Recognition Results", 
+                                                  padx=10, pady=10)
+        recognition_results_frame.pack(fill="x", padx=20, pady=10, expand=True)
+        
+        recognition_scrollbar = tk.Scrollbar(recognition_results_frame)
+        recognition_scrollbar.pack(side="right", fill="y")
+        
+        self.recognition_listbox = tk.Listbox(recognition_results_frame, 
+                                              yscrollcommand=recognition_scrollbar.set,
+                             width=80, height=8, state='disabled', exportselection=False)
+        self.recognition_listbox.pack(side='left', pady=10)
+        recognition_scrollbar.config(command=self.recognition_listbox.yview)
         
     def _select_list(self, event):
         listbox = event.widget
