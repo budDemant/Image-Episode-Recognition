@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 from src.query_show import QueryShow
+from src.episode_image_fetcher import EpisodeImageFetcher
 
 import os
 
@@ -16,6 +17,7 @@ class EpisodeRecognizerGUI:
         # Variables to store user input
         self.video_paths = []
         self.show_id = None
+        self.season_number_entry = None
 
         
         # 2. Create widgets (buttons, text fields, etc.)
@@ -90,7 +92,17 @@ class EpisodeRecognizerGUI:
         self.season_number_entry.pack(padx=10, pady=5)
         
         # Process button
-        
+        process_btn = tk.Button(
+            self.window,
+            text="Process Video(s)",
+            command=self._process,
+            bg="green",
+            fg="white",
+            font=("Arial", 12, "bold"),
+            height=2,
+            width=20
+        )
+        process_btn.pack(pady=10)
         
     def _select_list(self, event):
         listbox = event.widget
@@ -105,10 +117,10 @@ class EpisodeRecognizerGUI:
             name = show.get("name")
             first_air_date = show.get("first_air_date", "")
             year = first_air_date[:4] if first_air_date else "N/A"
-            id = show.get("id")
+            self.show_id = show.get("id")
             show_entry = f"{name} ({year})"
             listbox.insert(tk.END, show_entry)
-        return id
+        return self.show_id
     
     def _select_file(self):
         """Open file dialog to select a single video file"""
@@ -151,6 +163,9 @@ class EpisodeRecognizerGUI:
             if len(self.video_paths) > 5:
                 self.video_path_text.insert(tk.END, f"  ... and {len(self.video_paths) - 5} more")
         self.video_path_text.config(state='disabled')
+        
+    def _process(self):
+        pass
 
     
     def run(self):
