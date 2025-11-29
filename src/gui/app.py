@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog
 
+from src.query_show import QueryShow
+
 import os
 
 class EpisodeRecognizerGUI:
