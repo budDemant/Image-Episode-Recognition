@@ -3,6 +3,8 @@ from tkinter import filedialog
 
 from src.query_show import QueryShow
 from src.episode_image_fetcher import EpisodeImageFetcher
+from src.video_processor import process_videos
+from src.rename_file import rename_file
 
 import os
 
@@ -165,7 +167,18 @@ class EpisodeRecognizerGUI:
         self.video_path_text.config(state='disabled')
         
     def _process(self):
-        pass
+        fetcher = EpisodeImageFetcher()
+        episode_images, images_temp_dir = fetcher.fetch_season_images(self.show_id, 
+                                                                      self.season_number_entry)
+        results = process_videos(self.video_paths, self.show_id, 
+                                 self.season_number_entry, episode_images)
+        # for result in results:
+        #     rename_file(
+        #                 self.video_paths, self.season_number_entry, result['episode_number'],
+        #                 result['episode_name'], style='human'
+        #             )
+        fetcher.cleanup_temp_files(images_temp_dir)
+        
 
     
     def run(self):
