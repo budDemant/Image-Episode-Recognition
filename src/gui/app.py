@@ -58,13 +58,7 @@ class EpisodeRecognizerGUI:
         self.show_name_entry = tk.Entry(search_show_frame, width=40)
         self.show_name_entry.grid(row=0, column=1, padx=10, pady=5)
         
-        search_show_btn = tk.Button(
-            search_show_frame,
-            text="Search",
-            command=self._on_submit,
-            width=12,
-        )
-        search_show_btn.grid(row=0, column=3, pady=2)
+        
         
         # Frame: search results
         search_results_frame = tk.LabelFrame(self.window, text="Search Results", padx=10, pady=10)
@@ -79,14 +73,31 @@ class EpisodeRecognizerGUI:
         search_scrollbar.config(command=listbox.yview)
 
         listbox.bind("<<ListboxSelect>>", self._on_submit)
-
-
-    
+        
+        search_show_btn = tk.Button(
+            search_show_frame,
+            text="Search",
+            command=lambda: self.search_show(self.show_name_entry, listbox),
+            width=12,
+        )
+        search_show_btn.grid(row=0, column=3, pady=2)
+        
     def _on_submit(self):
         # Get data from input fields
         # Call your existing core functions
         # Display results
         pass
+    
+    def search_show(self, entry, listbox):
+        query = entry.get()
+        results = QueryShow().search_show_by_name(query)
+        #TODO: refactor numbered_list function to remove print statements
+        for show in results:
+            name = show.get("name")
+            first_air_date = show.get("first_air_date", "")
+            year = first_air_date[:4] if first_air_date else "N/A"
+            show_entry = f"{name} ({year})"
+            listbox.insert(tk.END, show_entry)
     
     def _select_file(self):
         """Open file dialog to select a single video file"""
