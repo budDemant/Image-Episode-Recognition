@@ -189,7 +189,12 @@ class EpisodeRecognizerGUI:
                                                                       season_number)
         results = process_videos(self.video_paths, self.show_id, 
                                  season_number, episode_images)
+        self.recognition_listbox.config(state='normal')
+        self.recognition_listbox.delete(0, tk.END)
         for video_path, result in results:  # unpack tuple
+            old_filename = os.path.basename(video_path)
+            name, ext = os.path.splitext(old_filename)
+            new_filename = f"S{season_number}E{result['episode_number']}{ext}"  
             rename_file(
                 video_path,  
                 season_number,
@@ -197,10 +202,10 @@ class EpisodeRecognizerGUI:
                 result['episode_name'],
                 style='db'
             )
+            self.recognition_listbox.insert(tk.END, f"Renamed {old_filename} to {new_filename}")
         fetcher.cleanup_temp_files(images_temp_dir)
         
 
-    
     def run(self):
         # Start GUI
         self.window.mainloop()
