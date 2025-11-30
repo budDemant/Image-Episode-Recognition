@@ -5,7 +5,6 @@ from src.query_show import QueryShow
 from src.episode_image_fetcher import EpisodeImageFetcher
 from src.video_processor import process_videos
 from src.rename_file import rename_file
-from src.user_interface import display_result
 
 import os
 
@@ -21,7 +20,7 @@ class EpisodeRecognizerGUI:
         self.video_paths = []
         self.show_id = None
         self.season_number_entry = None
-
+        self.search_results = []  # Store full search results
         
         # 2. Create widgets (buttons, text fields, etc.)
         self._create_widgets()
@@ -123,21 +122,26 @@ class EpisodeRecognizerGUI:
         
     def _select_list(self, event):
         listbox = event.widget
-        selection = listbox.get(listbox.curselection())
-        # print("Selected:", selection)
+        if listbox.curselection():
+            index = listbox.curselection()[0]
+            if index < len(self.search_results):
+                selected_show = self.search_results[index]
+                self.show_id = selected_show.get("id")
+                # print(f"Selected: {self.show_id}")
     
     def _search_show(self, entry, listbox):
         query = entry.get()
-        results = QueryShow().search_show_by_name(query)
         #TODO: refactor numbered_list function in query_show to remove print statements
-        for show in results:
+        self.search_results = QueryShow().search_show_by_name(query)
+        listbox.delete(0, tk.END)
+        self.show_id = None  # Reset selection
+        
+        for show in self.search_results:
             name = show.get("name")
             first_air_date = show.get("first_air_date", "")
             year = first_air_date[:4] if first_air_date else "N/A"
-            self.show_id = show.get("id")
             show_entry = f"{name} ({year})"
             listbox.insert(tk.END, show_entry)
-        return self.show_id
     
     def _select_file(self):
         """Open file dialog to select a single video file"""
