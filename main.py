@@ -21,6 +21,9 @@ def main():
     show_id = query.query_show()
     season_number = int(input("Enter season number: "))
     
+    # Ask if user wants additional metadata
+    fetch_metadata = input("Do you want to fetch and display additional metadata? (y/n): ").strip().lower() == 'y'
+    
     # Setup checkpoint for batch processing
     checkpoint_path = get_checkpoint_path(video_paths[0])
     videos_to_process, processed_videos = filter_unprocessed_videos(
@@ -34,7 +37,7 @@ def main():
     # Fetch episode images
     print("Downloading episode images from TMDB...")
     fetcher = EpisodeImageFetcher()
-    episode_images, images_temp_dir = fetcher.fetch_season_images(show_id, season_number)
+    episode_images, images_temp_dir = fetcher.fetch_season_images(show_id, season_number, fetch_additional_metadata=fetch_metadata)
     
     try:
         # Multiprocessing for folders

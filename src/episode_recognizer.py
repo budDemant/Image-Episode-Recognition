@@ -143,7 +143,7 @@ class EpisodeRecognizer:
         ep_num, scores = best_episode
         confidence = 1.0 - scores["best_match"]  # Convert distance to confidence
         
-        return {
+        result = {
             "episode_number": ep_num,
             "episode_name": scores["name"],
             "confidence": confidence,
@@ -151,6 +151,15 @@ class EpisodeRecognizer:
             "good_matches": scores["good_matches_count"],
             "is_confident": scores["best_match"] < threshold
         }
+        
+        # Add additional metadata if available
+        ep_data = episode_images[ep_num]
+        if "air_date" in ep_data:
+            result["air_date"] = ep_data["air_date"]
+        if "overview" in ep_data:
+            result["overview"] = ep_data["overview"]
+        
+        return result
     
     def _cleanup_temp_files(self):
         """Clean up all temporary directories"""

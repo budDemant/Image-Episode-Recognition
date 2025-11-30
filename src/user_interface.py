@@ -31,6 +31,10 @@ def display_result(video_path, result):
     
     print(f"\n=== RECOGNITION RESULT: {os.path.basename(video_path)} ===")
     print(f"Episode: {result['episode_number']} - {result['episode_name']}")
+    if 'air_date' in result:
+        print(f"Air Date: {result['air_date']}")
+    if 'overview' in result:
+        print(f"Synopsis: {result['overview']}")
     print(f"Confidence: {result['confidence']:.3f}")
     print(f"Similarity Score: {result['similarity_score']:.3f}")
     print(f"Good Matches: {result['good_matches']}")
