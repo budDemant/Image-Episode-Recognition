@@ -1,3 +1,4 @@
+from multiprocessing import freeze_support
 from src.rename_file import rename_file
 from src.query_show import QueryShow
 from src.episode_image_fetcher import EpisodeImageFetcher
@@ -57,5 +58,6 @@ def main():
         fetcher.cleanup_temp_files(images_temp_dir)
 
 if __name__ == "__main__":
+    freeze_support()  # for multiprocessing with PyInstaller
     main()
     

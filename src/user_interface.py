@@ -1,11 +1,10 @@
 """User interface functions for input and output"""
 import os
-import sys
+
 
 def get_video_paths():
     """Get video filepath(s) from user input"""
     while True:
-        sys.stdout.flush()  # Ensure prompt is displayed before waiting for input
         path = input("Enter path to video file or folder (or 'q' to quit): ").strip().strip('"')
         if path.lower() == 'q':
             return None
