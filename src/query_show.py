@@ -8,23 +8,28 @@ class QueryShow:
     def __init__(self):
         self.api_key = os.environ.get("TMDB_API_KEY")
         self.url = "https://api.themoviedb.org/3/search/tv"
-        self.tv_show_query = None
     
-    def search_show(self):
-        if self.tv_show_query is None:
-            self.tv_show_query = str(input("Search for a TV Show: "))
+    def search_show_by_name(self, show_name):
         params = {
             "api_key": self.api_key,
-            "query": self.tv_show_query
+            "query": show_name
         }
         response = requests.get(self.url, params=params)
         if response.status_code == 200:
-            print(f'Search results for "{self.tv_show_query}"')
             data = response.json()
             results = data.get("results", [])
             return results   
         else:
-            print(f"Error: {response.status_code} - {response.text}")
+            return []
+    
+    def search_show_cli(self):
+        tv_show_query = str(input("Search for a TV Show: "))
+        results = self.search_show_by_name(tv_show_query)
+        if results:
+            print(f'Search results for "{tv_show_query}"')
+        else:
+            print("No results found or API error occurred")
+        return results
 
     def show_numbered_list(self, shows):
         """Display numbered list of shows"""
@@ -59,7 +64,7 @@ class QueryShow:
         return True
     
     def query_show(self):
-        results = self.search_show()
+        results = self.search_show_cli()
         self.show_numbered_list(results)
         selected_show = self.select_show(results)
         show_id = self.get_id(selected_show)

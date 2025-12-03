@@ -1,6 +1,7 @@
 import os
 
 
+#TODO: Error renaming anomaly episode names including "?" in the file path
 def rename_file(old_path, season_number, episode_number, episode_name, style='db'):
     
     directory, old_filename = os.path.split(old_path) # separate filename from entire path
