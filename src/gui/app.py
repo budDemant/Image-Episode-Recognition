@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog
 
-from src.query_show import QueryShow
-from src.episode_image_fetcher import EpisodeImageFetcher
-from src.video_processor import process_videos
-from src.rename_file import rename_file
+from src.utils.query_show import QueryShow
+from src.utils.episode_image_fetcher import EpisodeImageFetcher
+from src.utils.video_processor import process_videos
+from src.utils.rename_file import rename_file
 
 import os
 
