@@ -51,7 +51,7 @@ class EpisodeImageFetcher:
             print(f"Error downloading {url}: {e}")
         return False
     
-    def fetch_season_images(self, tv_id, season_number, temp_dir=None):
+    def fetch_season_images(self, tv_id, season_number, temp_dir=None, fetch_additional_metadata=False):
         """
         Download all episode images for a season
         Returns: dict mapping episode numbers to lists of image file paths
@@ -93,6 +93,10 @@ class EpisodeImageFetcher:
                 "name": ep_name,
                 "images": downloaded_paths
             }
+            
+            if fetch_additional_metadata:
+                episode_images[ep_num]["air_date"] = episode.get("air_date", "N/A")
+                episode_images[ep_num]["overview"] = episode.get("overview", "N/A")
             
             print(f"Episode {ep_num}: {len(downloaded_paths)} images downloaded")
         

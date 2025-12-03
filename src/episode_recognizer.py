@@ -17,7 +17,7 @@ class EpisodeRecognizer:
         self.matcher = PerceptualHashMatcher()
         self.temp_dirs = []  # Track temp directories for cleanup
     
-    def recognize_episode(self, video_path, tv_id, season_number, confidence_threshold=0.3):
+    def recognize_episode(self, video_path, tv_id, season_number, confidence_threshold=0.3, episode_images=None):
         """
         Main function to identify which episode a video represents
         
@@ -26,6 +26,7 @@ class EpisodeRecognizer:
             tv_id: TMDB TV show ID
             season_number: Season number to compare against
             confidence_threshold: Similarity threshold for matches
+            episode_images: Optional pre-fetched episode images dict to reuse
             
         Returns:
             dict: Best match information including episode number, name, and confidence
@@ -38,11 +39,12 @@ class EpisodeRecognizer:
             print("Extracting frames from video...")
             frame_count = sample_frames(video_path, video_temp_dir, interval_seconds=10)
             print(f"Extracted {frame_count} frames")
-            # TODO: except for invalid file path
-            # Download episode images
-            print("Downloading episode images from TMDB...")
-            episode_images, images_temp_dir = self.fetcher.fetch_season_images(tv_id, season_number)
-            self.temp_dirs.append(images_temp_dir)
+
+            # Download episode images (skip if already provided)
+            if episode_images is None:
+                print("Downloading episode images from TMDB...")
+                episode_images, images_temp_dir = self.fetcher.fetch_season_images(tv_id, season_number)
+                self.temp_dirs.append(images_temp_dir)
             
             # Load video frames
             video_frames = self._load_video_frames(video_temp_dir)
@@ -141,7 +143,7 @@ class EpisodeRecognizer:
         ep_num, scores = best_episode
         confidence = 1.0 - scores["best_match"]  # Convert distance to confidence
         
-        return {
+        result = {
             "episode_number": ep_num,
             "episode_name": scores["name"],
             "confidence": confidence,
@@ -149,6 +151,15 @@ class EpisodeRecognizer:
             "good_matches": scores["good_matches_count"],
             "is_confident": scores["best_match"] < threshold
         }
+        
+        # Add additional metadata if available
+        ep_data = episode_images[ep_num]
+        if "air_date" in ep_data:
+            result["air_date"] = ep_data["air_date"]
+        if "overview" in ep_data:
+            result["overview"] = ep_data["overview"]
+        
+        return result
     
     def _cleanup_temp_files(self):
         """Clean up all temporary directories"""
